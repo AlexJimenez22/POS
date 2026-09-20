@@ -1,0 +1,133 @@
+.form {
+    padding: 1rem 2rem;
+    overflow-x: hidden;
+    height: auto;
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem; 
+    }
+
+    .field {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        label {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        input[pInputText] {
+            width: 100%;
+            padding: 0.75rem 1.5rem !important;
+            font-size: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            transition: all 0.2s ease;
+
+            &:focus {
+                border-color: #3b82f6;
+                box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+                outline: none;
+            }
+        }
+
+        ::ng-deep .p-inputnumber {
+            width: 100%;
+            
+            .p-inputnumber-input {
+                width: 100%;
+                padding: 0.75rem 1.5rem;
+                font-size: 1.5rem;
+                border-radius: 8px;
+                border: 1px solid #cbd5e1;
+            }
+
+            &.p-disabled {
+                opacity: 0.55;
+                cursor: not-allowed;
+                .p-inputnumber-input {
+                    background-color: #f1f5f9;
+                }
+            }
+        }
+
+        ::ng-deep .p-select {
+            width: 100% !important;
+            font-size: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+
+            .p-select-label {
+                font-size: 1.5rem;
+            }
+
+            &:hover {
+                border-color: #3b82f6;
+            }
+
+            &.p-focus {
+                border-color: #3b82f6;
+                box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+            }
+        }
+
+        .p-error {
+            color: #ef4444;
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        .p-info {
+            color: #64748b;
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        .unit-badge {
+            color: #2563eb;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+    }
+
+    .field-full {
+        grid-column: span 2; 
+        
+        .toggle-container {
+            padding-top: 0.5rem;
+            transform: scale(1.2); 
+            transform-origin: left center;
+        }
+    }
+
+    ::ng-deep .p-toggleswitch {
+        transform: scale(1.5) !important;
+        transform-origin: left center;
+    }
+}
+
+.buttons {
+    display: flex;
+    justify-content: end;
+    margin-top: 1.5rem;
+
+    ::ng-deep p-button {
+        .p-button {
+            background-color: var(--primary-color);
+            padding: 1rem 3rem;
+            font-size: 1.5rem;
+
+            &:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+            }
+        }
+    }
+}

@@ -1,0 +1,102 @@
+<form class="form" #formData="ngForm">
+    <div class="form-grid">
+        <div class="field">
+            <label for="serialNumber">Codigo</label>
+            <input id="serialNumber" type="text" pInputText name="serialNumber" [(ngModel)]="productCreate.serialNumber" #serialNumber="ngModel" placeholder="Codigo" required />
+            @if (serialNumber.invalid && serialNumber.touched) { <p class="p-error">Codigo inválido</p> }
+        </div>
+        <div class="field">
+            <label for="name">Nombre</label>
+            <input id="name" type="text" pInputText name="name" [(ngModel)]="productCreate.name" #name="ngModel" placeholder="Nombre" required />
+            @if (name.invalid && name.touched) { <p class="p-error">Nombre inválido</p> }
+        </div>
+
+        <div class="field">
+            <label for="fkUnit">Unidad de venta</label>
+            <p-select 
+                inputId="fkUnit" 
+                [options]="units_$()" 
+                [(ngModel)]="productCreate.fkUnit" 
+                placeholder="Selecciona una unidad" 
+                optionLabel="name" 
+                optionValue="pkUnit" 
+                required 
+                name="fkUnit" 
+                #fkUnit="ngModel"
+                appendTo="body" />
+            @if (fkUnit.invalid && fkUnit.touched) { <p class="p-error">Unidad inválida</p> }
+        </div>
+
+        <div class="field">
+            <label for="minQuantity">
+                Cantidad Mínima 
+                @if(getSelectedUnitName()) { <span class="unit-badge">({{ getSelectedUnitName() }})</span> }
+            </label>
+            <p-input-number 
+                id="minQuantity" 
+                name="minQuantity" 
+                [(ngModel)]="productCreate.minQuantity" 
+                #minQuantity="ngModel" 
+                [disabled]="!productCreate.fkUnit"
+                [min]="0"
+                required />
+            @if (!productCreate.fkUnit) { <p class="p-info">Selecciona una unidad primero</p> }
+        </div>
+
+        <div class="field">
+            <label for="quantity">
+                Cantidad 
+                @if(getSelectedUnitName()) { <span class="unit-badge">({{ getSelectedUnitName() }})</span> }
+            </label>
+            <p-input-number 
+                id="quantity" 
+                name="quantity" 
+                [(ngModel)]="productCreate.quantity" 
+                #quantity="ngModel" 
+                [disabled]="!productCreate.fkUnit || productCreate.minQuantity === null || productCreate.minQuantity === undefined"
+                [min]="productCreate.minQuantity"
+                required />
+            
+            @if (!productCreate.fkUnit) { 
+                <p class="p-info">Selecciona una unidad primero</p> 
+            } @else if (productCreate.minQuantity === null || productCreate.minQuantity === undefined) {
+                <p class="p-info">Ingresa la cantidad mínima primero</p>
+            } @else if (quantity.invalid && quantity.touched) { 
+                <p class="p-error">
+                    @if(productCreate.quantity < productCreate.minQuantity) {
+                        No puede ser menor al mínimo ({{ productCreate.minQuantity }})
+                    } @else {
+                        Cantidad inválida
+                    }
+                </p> 
+            }
+        </div>
+
+        <div class="field">
+            <label for="minPrice">Precio mínimo</label>
+            <p-input-number mode="currency" currency="MXN" locale="en-MX" id="minPrice" name="minPrice" [(ngModel)]="productCreate.minPrice" #minPrice="ngModel" required />
+            @if (minPrice.invalid && minPrice.touched) { <p class="p-error">Precio mínimo inválido</p> }
+        </div>
+
+        <div class="field">
+            <label for="price">Precio</label>
+            <p-input-number [min]="productCreate.minPrice" [disabled]="!productCreate.minPrice" mode="currency" currency="MXN" locale="en-MX" id="price" name="price" [(ngModel)]="productCreate.price" #price="ngModel" required />
+            @if ( !productCreate.minPrice ) { 
+                <p class="p-info">Debe de seleccionar un precio minimo primero</p> 
+            } @else if(price.invalid && price.touched){
+                <p class="p-error">Precio inválido</p> 
+            }
+        </div>
+
+        <div class="field field-full">
+            <label for="switch">Habilitado</label>
+            <div class="toggle-container">
+                <p-toggleswitch [(ngModel)]="productCreate.enable" inputId="switch" name="enable" />
+            </div>
+        </div>
+    </div>
+
+    <div class="buttons">
+        <p-button label="Añadir" [disabled]="formData.invalid" (onClick)="!product ? addNewProduct() : updateProduct()" />
+    </div>
+</form>

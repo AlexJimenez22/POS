@@ -1,0 +1,25 @@
+
+<div>
+    <form class="form" #formData="ngForm">
+        <div class="field">
+            <label for="name">Nombre</label>
+            <input pInputText type="text" name="name" id="name" #name="ngModel" [(ngModel)]="unitCreate.name" required>
+            @if (name.invalid && name.touched) { <p class="p-error">El nombre es invalido</p> }
+        </div>
+        <div class="field">
+            <label for="abbreviation">Abreviacion</label>
+            <input pInputText type="text" name="abbreviation" id="abbreviation" #abbreviation="ngModel" [(ngModel)]="unitCreate.abbreviation" required>
+            @if (abbreviation.invalid && abbreviation.touched) { <p class="p-error">El abreviacion es invalido</p> }
+        </div>
+        <div class="field field-full">
+            <label for="enable">Habilitado</label>
+            <div class="toggle-container">
+                <p-toggleswitch [(ngModel)]="unitCreate.enable" inputId="enable" name="enable" />
+            </div>
+        </div>
+
+        <div class="buttons">
+            <p-button label="Añadir" (onClick)=" !unit ? addNewUnit() : putUnit()" />
+        </div>
+    </form>
+</div>

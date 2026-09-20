@@ -1,0 +1,135 @@
+<div>
+    <div class="header">
+        <h1>Productos</h1>
+        <div class="line" ></div>
+    </div>
+    <p-table
+        #dt1
+        [value]="products_$()"
+        [globalFilterFields]="['name']"
+        selectionMode="single"
+        [(selection)]="productSelected"
+        (onRowSelect)="onRowSelect($event)"
+        dataKey="pkProduct"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        [rows]="5"
+        [paginator]="true"
+    >
+    <ng-template #caption>
+        <div class="table-header">
+            <p-button label="Añadir" (onClick)="showModal = true; titleModal = 'Añadir producto'" />
+            <p-iconfield iconPosition="left">
+                <input 
+                style="font-size: 1.5rem;"
+                    #filterInput
+                    pInputText 
+                    type="text" 
+                    (input)="dt1.filterGlobal(filterInput.value, 'contains')" 
+                    placeholder="Buscar por nombre..." 
+                />
+            </p-iconfield>
+        </div>
+    </ng-template>
+        <ng-template #header>
+            <tr>
+                <th pSortableColumn="serialNumber" style="width:15%">
+                    <div class="flex items-center gap-2">
+                        Codigo
+                        <i class="pi pi-sort-alt"></i>
+                    </div>
+                </th>
+                <th pSortableColumn="name" style="width:15%">
+                    <div class="flex items-center gap-2">
+                        Nombre
+                        <i class="pi pi-sort-alt"></i>
+                    </div>
+                </th>
+                <th pSortableColumn="quantity" style="width:15%">
+                    <div class="flex items-center gap-2">
+                        Cantidad
+                        <i class="pi pi-sort-alt"></i>
+                    </div>
+                </th>
+                <th pSortableColumn="minQuantity" style="width:15%">
+                    <div class="flex items-center gap-2">
+                        Cantidad Min.
+                        <i class="pi pi-sort-alt"></i>
+                    </div>
+                </th>
+                <th pSortableColumn="price" style="width:15%">
+                    <div class="flex items-center gap-2">
+                        Precio
+                        <i class="pi pi-sort-alt"></i>
+                    </div>
+                </th>
+                <th pSortableColumn="minPrice" style="width:15%">
+                    <div class="flex items-center gap-2">
+                        Precio Min.
+                        <i class="pi pi-sort-alt"></i>
+                    </div>
+                </th>
+                <th pSortableColumn="enable" style="width:10%">
+                    <div class="flex items-center gap-2">
+                        Estado
+                        <i class="pi pi-sort-alt"></i>
+                    </div>
+                </th>
+                <th pSortableColumn="registerDate" style="width:12%">
+                    <div class="flex items-center gap-2">
+                        Fecha de registro
+                        <i class="pi pi-sort-alt"></i>
+                    </div>
+                </th>
+                <th pSortableColumn="updateDate" style="width:12%">
+                    <div class="flex items-center gap-2">
+                        Fecha de actualizacion
+                        <i class="pi pi-sort-alt"></i>
+                    </div>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-product>
+            <tr [pSelectableRow]="product">
+                <td>
+                    {{ product.serialNumber }}
+                </td>
+                <td>
+                    {{ product.name }}
+                </td>
+                <td>
+                    {{ product.quantity}} {{product.unit.name}}
+                </td>
+                <td>
+                    {{ product.minQuantity}} {{product.unit.name}}
+                </td>
+                <td>
+                    {{ product.price}}
+                </td>
+                <td>
+                    {{ product.minPrice}}
+                </td>
+                <td>
+                    <p-tag style="font-size: 1.5rem;" [value]="product.enable ? 'Activo' : 'Inactivo'" [severity]="product.enable ? 'success' : 'danger'" />
+                </td>
+                <td>
+                    {{ product.registerDate ? (product.registerDate | date: 'dd/MM/yyyy HH:mm') : '--' }}
+                </td>
+                <td>
+                    {{ product.updateDate ? (product.updateDate | date: 'dd/MM/yyyy HH:mm') : '--' }}
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+            <tr>
+                <td colspan="5">No se encontraron Productos</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="showModal" (onHide)="showModal = false; productSelected = null;" draggable="false" modal="true" [style]="{ width: '60rem'}">
+    <ng-template #header>
+        <h1>{{titleModal}}</h1>
+    </ng-template>
+    <app-product-form (onSuccess)="handleSuccess()" [product]="productSelected" />
+</p-dialog>

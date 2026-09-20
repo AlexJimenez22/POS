@@ -1,0 +1,50 @@
+<form class="form" #formData="ngForm">
+    <div class="form-grid">
+        <div class="field">
+            <label for="name">Nombre</label>
+            <input id="name" type="text" pInputText name="name" [(ngModel)]="userCreate.name" #name="ngModel" placeholder="Nombre" required />
+            @if (name.invalid && name.touched) { <p class="p-error">Nombre inválido</p> }
+        </div>
+
+        <div class="field">
+            <label for="lastname">Apellidos</label>
+            <input id="lastname" type="text" pInputText name="lastname" [(ngModel)]="userCreate.lastname" #lastname="ngModel" placeholder="Apellido" required />
+            @if (lastname.invalid && lastname.touched) { <p class="p-error">Apellido inválido</p> }
+        </div>
+
+        <div class="field">
+            <label for="mail">Correo</label>
+            <input id="mail" type="text" pInputText name="mail" [(ngModel)]="userCreate.mail" #mail="ngModel" placeholder="Correo" required email />
+            @if (mail.invalid && mail.touched) { <p class="p-error">Correo inválido</p> }
+        </div>
+
+        <div class="field">
+            <label for="role">Rol</label>
+            <p-select 
+                inputId="role" 
+                [options]="roles" 
+                [(ngModel)]="userCreate.role" 
+                placeholder="Selecciona un rol" 
+                optionLabel="name" 
+                optionValue="value" 
+                required 
+                name="role" 
+                #role="ngModel"
+                appendTo="body" />
+            @if (role.invalid && role.touched) { <p class="p-error">Rol inválido</p> }
+        </div>
+
+        <div class="field field-full">
+            <label for="switch">Habilitado</label>
+            <div class="toggle-container">
+                <p-toggleswitch [(ngModel)]="userCreate.enable" inputId="switch" name="enable" />
+            </div>
+        </div>
+    </div>
+
+    <div class="buttons">
+
+        <p-button label="Añadir" (onClick)=" !user ? addNewUser() : updateUser()" />
+
+    </div>
+</form>

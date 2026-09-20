@@ -1,0 +1,165 @@
+<div class="sales-dashboard-container">
+  
+  <!-- SECCIÓN SUPERIOR: FILTROS DE FECHA -->
+  <header class="dashboard-filter-bar">
+    <div class="title-section">
+      <h2>Resumen de Operaciones</h2>
+      <p>Monitoreo de ingresos, alertas e historial</p>
+    </div>
+    
+    <div class="date-range-selectors">
+      <div class="date-field">
+        <label for="initDate">Desde</label>
+        <input type="date" id="initDate" [(ngModel)]="initDate_$" (change)="loadSalesByRange()" />
+      </div>
+      <div class="date-field">
+        <label for="endDate">Hasta</label>
+        <input type="date" id="endDate" [(ngModel)]="endDate_$" (change)="loadSalesByRange()" />
+      </div>
+    </div>
+  </header>
+
+  <!-- GRID PRINCIPAL DE CONTENIDO -->
+  <div class="dashboard-main-grid">
+    
+    <!-- LADO IZQUIERDO: REAL-TIME KPIs Y TABLA TOP PRODUCTOS -->
+    <div class="metrics-column">
+      
+      <!-- KPIs TARJETAS -->
+      @if (resumeToday_$(); as resume) {
+        <section class="kpi-cards-grid">
+          <div class="kpi-card-item">
+            <div class="kpi-icon-box success-variant">
+              <i class="pi pi-money-bill"></i>
+            </div>
+            <div class="kpi-data">
+              <span class="kpi-label">Ingresos del Día</span>
+              <h3 class="kpi-value">${{ resume.totalAmountSalesToday | number:'1.2-2' }}</h3>
+            </div>
+          </div>
+
+          <div class="kpi-card-item">
+            <div class="kpi-icon-box primary-variant">
+              <i class="pi pi-shopping-cart"></i>
+            </div>
+            <div class="kpi-data">
+              <span class="kpi-label">Transacciones Totales</span>
+              <h3 class="kpi-value">{{ resume.totalSalesToday }}</h3>
+            </div>
+          </div>
+        </section>
+      }
+
+      <!-- PRODUCTOS MÁS VENDIDOS -->
+      <section class="dashboard-card-section">
+        <div class="section-header">
+          <h3><i class="pi pi-bolt text-accent"></i> Productos más vendidos</h3>
+        </div>
+        <div class="table-responsive">
+          <table class="pos-clean-table">
+            <thead>
+              <tr>
+                <th>Top</th>
+                <th>Producto</th>
+                <th class="align-right">Cantidad vendida</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (product of topProducts_$(); track product.pkProduct) {
+                <tr>
+                  <td class="cell-rank"><span class="rank-number">{{ $index + 1 }}</span></td>
+                  <td class="cell-name">{{ product.name }}</td>
+                  <td class="align-right cell-amount">{{ product.totalAmount }} {{product.abbreviationUnit}}</td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="3" class="table-empty">No hay registro de productos vendidos en este rango.</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- HISTORIAL DE TICKETS RECIENTES -->
+      <section class="dashboard-card-section mt-4">
+        <div class="section-header">
+          <h3><i class="pi pi-list"></i> Historial de Tickets Recientes</h3>
+        </div>
+        
+        <div class="tickets-flex-list">
+          <!-- Tarjeta de Ticket Desglosada -->
+           @for (sale of sales_$(); track $index) {
+             <div class="ticket-wrapper-card">
+               <div class="ticket-top-row">
+                 <div class="ticket-meta">
+                   <span class="ticket-id-tag">Folio #{{sale.pkSale}}</span>
+                   <span class="ticket-timestamp"><i class="pi pi-clock"></i> {{ sale.registerDate | date }}</span>
+                 </div>
+                 <div class="ticket-grand-total">${{sale.total}}</div>
+               </div>
+   
+               <div class="ticket-items-details">
+                 <!-- Detalle dinámico del producto -->
+                 <div class="detail-product-line">
+                  @for (product of sale.details; track $index) {
+                    <div class="detail-product-info" >
+                      <span class="prod-qty-name"><strong>{{product.quantity}} {{product.product?.abbreviationUnit}}</strong> × {{product.product?.name}}</span>
+                      <span class="prod-total-price">${{product.totalProduct}}</span>
+                    </div>
+                  } 
+                 </div>
+               </div>
+   
+               <div class="ticket-bottom-row">
+                 <div class="operator-info">
+                   <i class="pi pi-user"></i> Cajero: <strong>{{sale.user?.name}} {{sale.user?.lastname}} ({{sale.user?.role}})</strong>
+                 </div>
+                 <div class="cash-breakdown">
+                   <span>Efectivo: <strong>${{sale.receivedAmount}}</strong></span>
+                   <span class="divider">|</span>
+                   <span>Cambio: <strong class="text-success">${{sale.changeAmount}}</strong></span>
+                 </div>
+               </div>
+             </div>
+           }
+        </div>
+      </section>
+
+    </div>
+
+    <!-- LADO DERECHO: ALERTAS DE INVENTARIO (CRÍTICO PARA EL CAJERO) -->
+    <aside class="alerts-column">
+      <div class="alerts-sticky-panel">
+        <div class="alerts-panel-header">
+          <h3><i class="pi pi-exclamation-triangle"></i> Control de Stock</h3>
+          <span class="alerts-counter-badge">{{ alertStock_$().length }}</span>
+        </div>
+
+        <div class="alerts-scrollable-area">
+          @for (item of alertStock_$(); track item.pkProduct) {
+            <div class="stock-alert-card" [attr.data-state]="item.state">
+              <div class="alert-card-body">
+                <span class="alert-product-title">{{ item.name }}</span>
+                <div class="alert-stock-status">
+                  Disponibles: <strong class="qty-num">{{ item.quantity }}</strong> 
+                  <span class="separator">/</span> 
+                  Mínimo: <strong>{{ item.minQuantity }}</strong>
+                </div>
+              </div>
+              <div class="alert-status-pill">
+                {{ item.state === 'warning' ? 'Bajo Stock' : 'Crítico' }}
+              </div>
+            </div>
+          } @empty {
+            <div class="alerts-clear-state">
+              <i class="pi pi-check-circle"></i>
+              <p>Inventario al corriente. Sin alertas pendientes.</p>
+            </div>
+          }
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</div>

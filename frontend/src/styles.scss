@@ -1,0 +1,101 @@
+/* You can add global styles to this file, and also import other style files */
+@import "primeicons/primeicons.css";
+
+:root{
+    --bg-color: #f8f9fa;          /* Fondo principal ultra descansado */
+    --surface-color: #ffffff;     /* Fondo de tarjetas, paneles y contenedores */
+    --text-color: #1e293b;        /* Texto principal con contraste de alto rango (> 7:1) */
+    --text-secondary: #64748b;    /* Texto secundario (descripciones, subtítulos) */
+    --border-color: #e2e8f0;      /* Líneas divisorias y bordes sutiles */
+    
+    /* Acción Principal */
+    --primary-color: #2563eb;     /* Azul Eléctrico (Sujeto a personalización de marca) */
+    --primary-color-hover: #1d4ed8;
+    --primary-color-light: #eff6ff;
+
+    --color-success: #16a34a;         /* Botón Pagar / Cobro Exitoso (Verde) */
+    --color-success-hover: #15803d;
+    --color-success-light: #f0fdf4;
+
+    --color-danger: #dc2626;          /* Botón Cancelar / Eliminar Producto (Rojo) */
+    --color-danger-hover: #b91c1c;
+    --color-danger-light: #fef2f2;
+
+    --color-warning: #eab308;         /* En Espera / Modificar Ticket (Amarillo) */
+    --color-warning-hover: #ca8a04;
+    --color-warning-light: #fef9c3;
+
+    /* Elemento de atención/descuentos */
+    --color-accent: #f97316;          /* Naranja de destaque */
+}
+html{
+    font-size: 62.5%;
+    box-sizing: border-box;
+}
+
+*, *:before, *:after{
+    box-sizing: inherit;
+}
+
+
+
+body{
+    font-size: 16px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.5; 
+
+}
+
+html, body{
+    margin: 0;
+    padding: 0;
+}
+
+.container{
+    max-width: 95%;
+    margin: 0 auto;
+}
+
+
+.p-error{
+    color: rgb(217, 11, 11);
+    font-size: 1.2rem;
+}
+
+// Estilos para el toast 
+.p-toast {
+    width:  30rem !important;
+}
+.p-toast .p-toast-summary {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.p-toast .p-toast-detail {
+    font-size: 1.3rem;
+}
+
+.p-toast .p-toast-message-icon {
+    font-size: 2rem;
+}
+
+// label {
+//     font-size: 1.2rem;
+//     font-weight: 600;
+//     color: #374151;
+// }
+
+// input[pInputText] {
+//     width: 100%;
+//     padding: 0.75rem 1.5rem !important;
+//     font-size: 1.5rem;
+//     border-radius: 8px;
+//     border: 1px solid #cbd5e1;
+//     transition: all 0.2s ease;
+
+//     &:focus {
+//         border-color: #3b82f6;
+//         box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+//         outline: none;
+//     }
+// }

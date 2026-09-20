@@ -1,0 +1,14 @@
+<aside class="sidebar-container">
+    @for (item of menuItems; track $index) {
+        <a 
+            [routerLink]="item.path" 
+            routerLinkActive="active-menu"
+            [routerLinkActiveOptions]="{ exact: false }"
+            class="item"
+            *appAskForActions="item.rolesAllowed"
+        >
+            <i [class]="'pi ' + item.icon"></i>
+            {{item.name}}
+        </a>
+    }
+</aside>

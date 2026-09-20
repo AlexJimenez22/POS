@@ -1,0 +1,13 @@
+<div class="topbar-container">
+    <div class="app-info">
+        <app-text-logo [text]="'POS'" />
+        <i (click)="changeSidebarStatus()" class="pi pi-bars"></i>
+    </div>
+
+    <div class="user-info clickeable" *ngIf="user() as u" (click)="menu.toggle($event)">
+        <p>{{u.name}} {{u.lastname}}</p>
+        <span>({{u.role}})</span>
+    </div>
+</div>
+
+<p-menu #menu [model]="items" [popup]="true"></p-menu>

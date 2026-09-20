@@ -1,0 +1,58 @@
+.form {
+    padding: 1rem 2rem;
+    overflow-x: hidden;
+    height: auto;
+
+    .field {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        label {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        input[pInputText] {
+            width: 100%;
+            padding: 0.75rem 1.5rem !important;
+            font-size: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            transition: all 0.2s ease;
+
+            &:focus {
+                border-color: #3b82f6;
+                box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+                outline: none;
+            }
+        }
+    }
+
+    .field-full {
+        grid-column: span 2; 
+        
+        .toggle-container {
+            padding-top: 0.5rem;
+            transform: scale(1.2); 
+            transform-origin: left center;
+        }
+    }
+    ::ng-deep .p-toggleswitch {
+        transform: scale(1.5) !important;
+        transform-origin: left center;
+    }
+}
+
+.buttons{
+    display: flex;
+    justify-content: end;
+    ::ng-deep p-button{
+        .p-button{
+            background-color: var(--primary-color);
+            padding: 1rem 3rem;
+            font-size: 1.5rem;
+        }
+    }
+}

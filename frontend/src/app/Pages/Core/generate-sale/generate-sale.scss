@@ -1,0 +1,267 @@
+// .header{
+//     h1{
+//         text-align: center;
+//     }
+
+//     .line{
+//         width: 100%;
+//         height: 4px;
+//         margin: 20px auto;
+        
+//         background: linear-gradient(
+//             to right, 
+//             transparent 0%, 
+//             var(--primary-color) 50%, 
+//             transparent 100%
+//         );
+        
+//         clip-path: ellipse(50% 100% at 50% 50%);   
+//     }
+// }
+
+.sale-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 160rem;
+  margin: 0 auto;
+  font-family: var(--font-family), sans-serif;
+
+  @media (min-width: 1024px) {
+    grid-template-columns: 2.5fr 1fr;
+  }
+}
+
+.form-card, .summary-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px; 
+  padding: 2.5rem;    
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+}
+
+.form-card h3, .summary-card h2 {
+  margin-top: 0;
+  margin-bottom: 2rem;
+  color: #0f172a;
+  font-size: 1.6rem; 
+  font-weight: 700;
+}
+
+.product-row {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-end;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px dashed #f1f5f9;
+
+  &:last-of-type {
+    border-bottom: none;
+    margin-bottom: 1rem;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  label {
+    font-weight: 600;
+    color: #334155;
+    font-size: 1.1rem;
+  }
+}
+
+.custom-input {
+  width: 100%;
+  height: 54px; 
+  padding: 0 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #0f172a;
+  transition: all 0.2s;
+
+  &:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  }
+}
+
+:host ::ng-deep {
+  .p-select {
+    width: 100%;
+    height: 54px !important;
+    align-items: center;
+    border-radius: 8px;
+    border-color: #cbd5e1;
+    
+    .p-select-label {
+      font-size: 1.2rem !important; 
+      font-weight: 500;
+      padding: 0.75rem 1rem;
+      color: #0f172a;
+    }
+
+    &:not(.p-disabled).p-focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+  }
+}
+
+.btn-add-product {
+  width: auto;
+  margin-top: 1rem;
+  background: #f8fafc;
+  color: #2563eb;
+  border: 2px dashed #cbd5e1;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #edf2f7;
+    border-color: #2563eb;
+  }
+}
+
+.btn-remove {
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fef2f2;
+  border: 1px solid #fee2e2;
+  border-radius: 8px;
+  color: #ef4444;
+  cursor: pointer;
+  padding: 0 1.2rem;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #fee2e2;
+    color: #dc2626;
+  }
+}
+
+.summary-card {
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    
+    i {
+      color: #2563eb;
+      font-size: 1.8rem;
+    }
+  }
+}
+
+.summary-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    color: #475569;
+    font-size: 1.5rem;
+
+    p {
+      margin: 0;
+    }
+
+    &.total {
+      color: #1e3a8a; 
+      font-weight: 800;
+      font-size: 2rem;
+      margin-top: 0.5rem;
+    }
+  }
+
+  .summary-divider {
+    border: 0;
+    border-top: 2px solid #e2e8f0;
+    margin: 0.5rem 0;
+  }
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 1.2rem;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1.25rem;
+  cursor: pointer;
+  box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+  transition: all 0.2s;
+
+  &:hover:not(:disabled) {
+    background-color: #1d4ed8;
+  }
+
+  &:disabled {
+    background-color: #cbd5e1;
+    color: #94a3b8;
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+}
+
+.custom-read-only-total {
+  width: 100%;
+  height: 54px;
+  padding: 0 1rem;
+  background: #f8fafc; // Fondo gris sutil para diferenciar que no es editable
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end; // Alinea los precios a la derecha
+  box-sizing: border-box;
+  transition: all 0.2s;
+
+  .total-amount {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #2563eb; // Color azul eléctrico de tu marca
+    line-height: 1.2;
+  }
+
+  .unit-price-hint {
+    font-size: 0.8rem;
+    color: #64748b; // Gris elegante para el precio unitario base
+    font-weight: 600;
+    margin-top: 2px;
+  }
+}
+
+// Opcional: Ajustamos levemente la fila de productos por si agregamos el nuevo campo
+.product-row {
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 0.75rem;
+    
+    .btn-remove {
+      align-self: flex-end;
+    }
+  }
+}

@@ -1,0 +1,99 @@
+<div>
+    <div class="header">
+        <h1>Unidades</h1>
+        <div class="line" ></div>
+    </div>
+    <p-table
+        #dt1
+        [value]="units_$()"
+        [globalFilterFields]="['name', 'abbreviation']"
+        selectionMode="single"
+        [(selection)]="unitSelected"
+        (onRowSelect)="onRowSelect($event)"
+        dataKey="pkUnit"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        [rows]="5"
+        [paginator]="true"
+    >
+    <ng-template #caption>
+        <div class="table-header">
+            <p-button label="Añadir" (onClick)="showModal = true; titleModal = 'Añadir Unidad'" />
+            <p-iconfield iconPosition="left">
+                <input 
+                style="font-size: 1.5rem;"
+                    #filterInput
+                    pInputText 
+                    type="text" 
+                    (input)="dt1.filterGlobal(filterInput.value, 'contains')" 
+                    placeholder="Buscar..." 
+                />
+            </p-iconfield>
+        </div>
+    </ng-template>
+        <ng-template #header>
+            <tr>
+                <th pSortableColumn="name" style="width:15%">
+                    <div class="flex items-center gap-2">
+                        Nombre
+                        <i class="pi pi-sort-alt"></i>
+                    </div>
+                </th>
+                <th pSortableColumn="abbreviation" style="width:15%">
+                    <div class="flex items-center gap-2">
+                        Abreviacion
+                        <i class="pi pi-sort-alt"></i>
+                    </div>
+                </th>
+                <th pSortableColumn="enable" style="width:10%">
+                    <div class="flex items-center gap-2">
+                        Estado
+                        <i class="pi pi-sort-alt"></i>
+                    </div>
+                </th>
+                <th pSortableColumn="registerDate" style="width:12%">
+                    <div class="flex items-center gap-2">
+                        Fecha de registro
+                        <i class="pi pi-sort-alt"></i>
+                    </div>
+                </th>
+                <th pSortableColumn="updateDate" style="width:12%">
+                    <div class="flex items-center gap-2">
+                        Fecha de actualizacion
+                        <i class="pi pi-sort-alt"></i>
+                    </div>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-unit>
+            <tr [pSelectableRow]="unit">
+                <td>
+                    {{ unit.name }}
+                </td>
+                <td>
+                    {{ unit.abbreviation }}
+                </td>
+                <td>
+                    <p-tag style="font-size: 1.5rem;" [value]="unit.enable ? 'Activo' : 'Inactivo'" [severity]="unit.enable ? 'success' : 'danger'" />
+                </td>
+                <td>
+                    {{ unit.registerDate ? (unit.registerDate | date: 'dd/MM/yyyy HH:mm') : '--' }}
+                </td>
+                <td>
+                    {{ unit.updateDate ? (unit.updateDate | date: 'dd/MM/yyyy HH:mm') : '--' }}
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+            <tr>
+                <td colspan="5">No se encontraron Unidades</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="showModal" (onHide)="showModal = false; unitSelected = null;" draggable="false" modal="true" [style]="{ width: '40rem'}">
+    <ng-template #header>
+        <h1>{{titleModal}}</h1>
+    </ng-template>
+    <app-unit-form (onSuccess)="handleSuccess()" [unit]="unitSelected" />
+</p-dialog>

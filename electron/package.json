@@ -1,0 +1,46 @@
+{
+  "name": "pos-electron",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "type": "commonjs",
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "start": "electron .",
+    "dist:mac": "electron-builder --mac",
+    "dist:win": "electron-builder --win --x64"
+  },
+  "devDependencies": {
+    "electron": "^43.0.0",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "com.pos.electron",
+    "productName": "POS System",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "**/*"
+    ],
+    "mac": {
+      "target": "dmg",
+      "extraResources": [
+        {
+          "from": "../backend/backend/bin/Release/net9.0/osx-arm64/publish",
+          "to": "backend"
+        }
+      ]
+    },
+    "win": {
+      "target": "nsis",
+      "extraResources": [
+        {
+          "from": "../backend/backend/bin/Release/net9.0/win-x64/publish",
+          "to": "backend"
+        }
+      ]
+    }
+  }
+}

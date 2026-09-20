@@ -1,0 +1,12 @@
+<div class="layout-container">
+    <app-topbar (sidebarStatus)="sidebarStatus = !sidebarStatus" />
+
+    <div class="content" [class.sidebar-closed]="!sidebarStatus">
+        <app-sidebar />
+        <main class="main-container" >
+            <div class="main" >
+                <router-outlet />
+            </div>
+        </main>
+    </div>
+</div>

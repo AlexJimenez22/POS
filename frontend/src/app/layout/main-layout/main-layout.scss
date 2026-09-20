@@ -1,0 +1,49 @@
+.layout-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.content {
+  display: flex;
+  flex: 1; 
+  overflow: hidden;
+}
+
+app-sidebar {
+  display: block;
+  width: 250px; 
+  flex-shrink: 0;
+  height: 100%;
+  transition: width 0.3s ease-in-out; 
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.main-container {
+  flex: 1;
+  background-color: var(--bg-color);
+  padding: 1.5rem;
+  box-sizing: border-box;
+  transition: all 0.3s ease-in-out; 
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; 
+  min-width: 0;
+
+  .main {
+    background-color: white;
+    flex: 1; 
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    overflow: auto; 
+    padding: 1rem;
+  }
+}
+
+.content.sidebar-closed app-sidebar {
+  width: 0px;
+}
