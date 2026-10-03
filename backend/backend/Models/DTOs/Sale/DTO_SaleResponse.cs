@@ -15,6 +15,11 @@ public class DTO_SaleResponse
     public DateTime? UpdateDate { get; set; }
     public Boolean Enable { get; set; }
     
+    public float? CashReceived { get; set; }
+    public float? CardReceived { get; set; }
+    public float? TransferReceived { get; set; }
+    
+    
     public DTO_MinimalUser? User { get; set; }
     public List<DTO_DetailResponse> Details { get; set; }
 }

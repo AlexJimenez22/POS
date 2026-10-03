@@ -20,6 +20,10 @@ public class Sale
     public Boolean? PayCash { get; set; }
     public Boolean? PayTransfer { get; set; }
     
+    public float? CardReceived { get; set; }
+    public float? CashReceived { get; set; }
+    public float? TransferReceived { get; set; }
+    
     // Fks
     public int FKUser {get; set;}
     

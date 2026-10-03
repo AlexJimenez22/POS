@@ -1,4 +1,3 @@
-
 export interface DTO_Sale {
   pkSale: number;
   discountAmount: number;
@@ -10,9 +9,15 @@ export interface DTO_Sale {
   updateDate: string | null;
   enable: boolean;
   user: DTO_MinimalUser | null;
+
   payCard: boolean;
   payCash: boolean;
   payTransfer: boolean;
+
+  cashReceived: number;
+  cardReceived: number;
+  transferReceived: number;
+
   details: DTO_DetailResponse[];
 }
 

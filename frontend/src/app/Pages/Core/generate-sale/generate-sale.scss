@@ -71,7 +71,6 @@
   label {
     font-weight: 600;
     color: #334155;
-    font-size: 1.1rem;
   }
 }
 
@@ -262,6 +261,48 @@
     
     .btn-remove {
       align-self: flex-end;
+    }
+  }
+}
+
+.pay-methods-container{
+  background-color: var(--bg-color);
+  padding: 1rem;
+  border-radius: 1rem;
+
+  p {
+    color: var(--primary-color);
+    font-weight: bold;
+    text-align: center;
+  }
+}
+
+.method{
+  p{
+    color: black;
+    text-align: left;
+  }
+
+  .inputs {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    /* Checkboxes para Efectivo, Tarjeta y Transferencia */
+    ::ng-deep #payCash .p-checkbox-box,
+    ::ng-deep #payCard .p-checkbox-box,
+    ::ng-deep #payTransfer .p-checkbox-box {
+      width: 2rem;
+      height: 2rem;
+    }
+
+    /* Inputs de texto para los tres métodos */
+    ::ng-deep #cashReceived .p-inputtext,
+    ::ng-deep #cardReceived .p-inputtext,
+    ::ng-deep #transferReceived .p-inputtext {
+      font-size: 1.25rem;
+      padding: 0.75rem;
+      width: 100%;
     }
   }
 }

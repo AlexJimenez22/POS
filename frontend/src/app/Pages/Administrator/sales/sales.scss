@@ -27,18 +27,57 @@
 
   .date-range-selectors {
     display: flex;
+    align-items: center; 
     gap: 1.5rem;
     background-color: var(--bg-color);
     padding: 0.8rem 1.6rem;
     border-radius: 8px;
     border: 1px solid var(--border-color);
+    justify-content: center;
+
+    /* Estilos para agrandar el SplitButton de PrimeNG */
+    ::ng-deep p-splitbutton, 
+    ::ng-deep .p-splitbutton {
+      height: 3.2rem; /* Altura total del botón */
+
+      /* Estilo para los botones internos (Principal y Flecha) */
+      .p-button {
+        font-size: 1.35rem !important; 
+        font-weight: 600 !important;
+        padding: 0.8rem 1.4rem !important;
+      }
+
+      /* Texto interno dentro del botón */
+      .p-button-label {
+        font-size: 1.35rem !important;
+        font-weight: 600 !important;
+      }
+
+      /* Ícono de la flecha y del botón */
+      .p-button-icon {
+        font-size: 1.5rem !important;
+      }
+    }
 
     .date-field {
       display: flex;
       flex-direction: column;
       
-      label { font-size: 1.1rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
-      input { border: none; background: transparent; font-size: 1.35rem; color: var(--text-color); font-weight: 600; outline: none; margin-top: 0.2rem;
+      label { 
+        font-size: 1.1rem; 
+        font-weight: 700; 
+        color: var(--text-secondary); 
+        text-transform: uppercase; 
+        letter-spacing: 0.05em; 
+      }
+      input { 
+        border: none; 
+        background: transparent; 
+        font-size: 1.35rem; 
+        color: var(--text-color); 
+        font-weight: 600; 
+        outline: none; 
+        margin-top: 0.2rem;
         &:focus { color: var(--primary-color); }
       }
     }
@@ -141,7 +180,7 @@
 
     .ticket-id-tag { background-color: var(--primary-color-light); color: var(--primary-color); font-weight: 700; padding: 0.2rem 0.8rem; border-radius: 4px; font-size: 1.2rem; }
     .ticket-timestamp { font-size: 1.1rem; color: var(--text-secondary); margin-left: 1rem; i { font-size: 1rem; } }
-    .ticket-grand-total { font-size: 1.6rem; font-weight: 700; color: var(--text-color); }
+    .ticket-grand-total { font-size: 1.6rem; font-weight: 700; color: var(--primary-color); }
   }
 
   .ticket-items-details {

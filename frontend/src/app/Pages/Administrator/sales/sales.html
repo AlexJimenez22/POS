@@ -8,6 +8,9 @@
     </div>
     
     <div class="date-range-selectors">
+      <div class="flex justify-center">
+          <p-splitbutton label="Generar reporte" (onClick)="generateReport('text')" [model]="items" />
+      </div>
       <div class="date-field">
         <label for="initDate">Desde</label>
         <input type="date" id="initDate" [(ngModel)]="initDate_$" (change)="loadSalesByRange()" />
@@ -116,9 +119,13 @@
                    <i class="pi pi-user"></i> Cajero: <strong>{{sale.user?.name}} {{sale.user?.lastname}} ({{sale.user?.role}})</strong>
                  </div>
                  <div class="cash-breakdown">
-                   <span>Efectivo: <strong>${{sale.receivedAmount}}</strong></span>
-                   <span class="divider">|</span>
-                   <span>Cambio: <strong class="text-success">${{sale.changeAmount}}</strong></span>
+                  <span>Tarjeta: <strong>${{sale.cardReceived}}</strong></span>
+                  <span class="divider">|</span>
+                  <span>Efectivo: <strong>${{sale.cashReceived}}</strong></span>
+                  <span class="divider">|</span>
+                  <span>Transferencia: <strong>${{sale.transferReceived}}</strong></span>
+                  <span class="divider">|</span>
+                  <span>Cambio: <strong class="text-success">${{sale.changeAmount}}</strong></span>
                  </div>
                </div>
              </div>

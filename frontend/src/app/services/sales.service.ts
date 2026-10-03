@@ -26,4 +26,11 @@ export class SalesService {
       `${this.apiUrl}/get-salesByRange?initDate=${initDate}&endDate=${endDate}`
     );
   }
+
+  generateReport(initDate: string, endDate: string, typeFile: string = 'txt'): Observable<Blob> {
+    return this.http.get(
+      `${this.apiUrl}/get-generateReportByDateRange?initDate=${initDate}&endDate=${endDate}&typeFile=${typeFile}`,
+      { responseType: 'blob' }
+    );
+  }
 }

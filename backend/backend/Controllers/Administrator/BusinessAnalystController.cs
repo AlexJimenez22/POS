@@ -1,4 +1,5 @@
 using System.IO.Compression;
+using System.Text;
 using backend.Data;
 using backend.Models.Database;
 using backend.Models.DTOs.General;
@@ -131,6 +132,10 @@ public class BusinessAnalystController : ControllerBase
                     RegisterDate = s.RegisterDate,
                     UpdateDate = s.UpdateDate,
                     Enable = s.Enable,
+                    CashReceived = s.CashReceived,
+                    CardReceived = s.CardReceived,
+                    TransferReceived = s.TransferReceived,
+                    
     
                     User = s.User != null ? new DTO_MinimalUser
                     {
@@ -166,6 +171,116 @@ public class BusinessAnalystController : ControllerBase
         }
     }
     
-    
+    [HttpGet("get-generateReportByDateRange")]
+    public async Task<IActionResult> GenerateReport(
+        [FromQuery] string initDate,
+        [FromQuery] string endDate,
+        [FromQuery] string typeFile = "text")
+    {
+        try
+        {
+            if (!DateTime.TryParse(initDate, out DateTime initLocal) ||
+                !DateTime.TryParse(endDate, out DateTime endLocal))
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = "Las fechas ingresadas no son validas"
+                });
+            }
+
+            endLocal = endLocal.AddDays(1);
+            
+
+            DateTime initUtc = initLocal.ToUniversalTime();
+            DateTime endUtc = endLocal.ToUniversalTime();
+
+            Console.WriteLine(initUtc);
+            Console.WriteLine(endUtc);
+            var sales = await _db.Sale
+                .Where(q => q.RegisterDate >= initUtc && q.RegisterDate < endUtc)
+                .Where(q => q.Enable == true)
+                .Select(s => new
+                {
+                    pkSale = s.PKSale,
+                    discountAmount = s.DiscountAmount,
+                    receivedAmount = s.ReceivedAmount,
+                    total = s.Total,
+                    changeAmount = s.ChangeAmount,
+                    cashReceived = s.CashReceived,
+                    cardReceived = s.CardReceived,
+                    transferReceived = s.TransferReceived,
+                    registerDate = s.RegisterDate,
+
+                    userName = s.FKUser != null ? s.User.Name : null,
+                })
+                .ToListAsync();
+
+            if (typeFile == "text")
+            {
+                var sb = new StringBuilder();
+
+                sb.AppendLine("==========================================");
+                sb.AppendLine("           CORTE DE CAJA - POS            ");
+                sb.AppendLine("==========================================");
+                sb.AppendLine($"Fecha Inicio: {initUtc}");
+                sb.AppendLine($"Fecha Fin: {endUtc}");
+                sb.AppendLine("------------------------------------------");
+                sb.AppendLine(string.Format(
+                    "{0,-8} {1,-10} {2,8} {3,8}",
+                    "Folio",
+                    "Efectivo",
+                    "Tarjeta",
+                    "Total"));
+                sb.AppendLine("------------------------------------------");
+
+                decimal totalCash = 0;
+                decimal totalCard = 0;
+                decimal totalTransfer = 0;
+                decimal totalGeneral = 0;
+
+                foreach (var sale in sales)
+                {
+                    sb.AppendLine(string.Format(
+                        "#{0,-7} ${1,-9:N2} ${2,-7:N2} ${3,7:N2}",
+                        sale.pkSale,
+                        sale.cashReceived ?? 0,
+                        sale.cardReceived ?? 0,
+                        sale.total));
+
+                    totalCash += (decimal)(sale.cashReceived ?? 0);
+                    totalCard += (decimal)(sale.cardReceived ?? 0);
+                    totalTransfer += (decimal)(sale.transferReceived ?? 0);
+                    totalGeneral += (decimal)sale.total;
+                }
+
+                sb.AppendLine("------------------------------------------");
+                sb.AppendLine("RESUMEN DE TOTALES:");
+                sb.AppendLine($"(+) Efectivo:      ${totalCash:N2}");
+                sb.AppendLine($"(+) Tarjeta:       ${totalCard:N2}");
+                sb.AppendLine($"(+) Transferencia: ${totalTransfer:N2}");
+                sb.AppendLine("------------------------------------------");
+                sb.AppendLine($"(=) TOTAL CORTE:   ${totalGeneral:N2}");
+                sb.AppendLine("==========================================");
+
+                byte[] fileBytes = Encoding.UTF8.GetBytes(sb.ToString());
+
+                string fileName = "Corte_Caja.txt";
+
+                return File(fileBytes, "text/plain", fileName);
+            }
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new
+            {
+                success = false,
+                message = ex.Message
+            });
+        }
+    }
+
     
 }

@@ -117,8 +117,77 @@
           <p>{{ saleCreate.total ? (saleCreate.total | currency:'MXN':'symbol') : '$0.00' }}</p>
         </div>
 
-        <div>
+        <div class="pay-methods-container" >
+          <p>Metodos de pago</p>
           
+          <div class="pay-methods" >
+            <div class="method" >
+              <p>Efectivo</p>
+              <div class="inputs">
+                <p-checkbox 
+                  id="payCash"
+                  name="payCash"
+                  [(ngModel)]="payCash"
+                  [binary]="true"
+                  style="width: 2rem;"
+                  (onChange)="getReceivedAmount()"
+                />
+                <p-input-number
+                  id="cashReceived"
+                  name="cashReceived"
+                  [(ngModel)]="cashReceived"
+                  [min]="0"
+                  style="flex: 1;"
+                  (onInput)="getReceivedAmount()"
+                />
+              </div>
+
+            </div>
+            <div class="method" >
+              <p>Tarjeta</p>
+              <div class="inputs">
+                <p-checkbox 
+                  id="payCard"
+                  name="payCard"
+                  [(ngModel)]="payCard"
+                  [binary]="true"
+                  style="width: 2rem;"
+                  (onChange)="getReceivedAmount()"
+                />
+                <p-input-number
+                  id="cardReceived"
+                  name="cardReceived"
+                  [(ngModel)]="cardReceived"
+                  [min]="0"
+                  style="flex: 1;"
+                  (onInput)="getReceivedAmount()"
+                />
+              </div>
+
+            </div>
+            <div class="method" >
+              <p>Transferencia</p>
+              <div class="inputs">
+                <p-checkbox 
+                  id="payTransfer"
+                  name="payTransfer"
+                  [(ngModel)]="payTransfer"
+                  [binary]="true"
+                  style="width: 2rem;"
+                  (onChange)="getReceivedAmount()"
+                />
+                <p-input-number
+                  id="transferReceived"
+                  name="transferReceived"
+                  [(ngModel)]="transferReceived"
+                  [min]="0"
+                  style="flex: 1;"
+                  (onInput)="getReceivedAmount()"
+                />
+              </div>
+
+            </div>
+          </div>
         </div>
 
         <div class="field" style="margin-top: 1rem;">
@@ -132,6 +201,7 @@
             [(ngModel)]="receivedAmount"
             class="custom-input"
             placeholder="$0.00"
+            disabled
             required
           />
         </div>

@@ -90,12 +90,19 @@ public class SaleController : ControllerBase
                 
                 product.Quantity -= item.Quantity;
             }
-
+            
+            
             Sale newSale = new Sale()
             {
                 DiscountAmount = sale.DiscountAmount,
                 ChangeAmount = sale.ChangeAmount,
-                ReceivedAmount =  sale.ReceivedAmount,
+                ReceivedAmount =  sale.ReceivedAmount,  
+                PayCard = sale.PayCard,
+                PayCash = sale.PayCash,
+                PayTransfer =  sale.PayTransfer,
+                CashReceived =  sale.CashReceived,
+                CardReceived =   sale.CardReceived,
+                TransferReceived =   sale.TransferReceived,
                 Subtotal = sale.Subtotal,
                 Total = sale.Total,
                 RegisterDate =  DateTime.UtcNow,

@@ -9,10 +9,12 @@ import { DTO_GenerateSale } from '../../../models/DTOs/DTO_GenerateSale';
 import { CurrencyPipe } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
 import { SaleService } from '../../../services/sale.service';
+import { Checkbox } from 'primeng/checkbox';
+import { InputNumber } from 'primeng/inputnumber';
 
 @Component({
   selector: 'app-generate-sale',
-  imports: [SelectModule, FormsModule, CurrencyPipe],
+  imports: [SelectModule, FormsModule, CurrencyPipe, Checkbox, InputNumber],
   templateUrl: './generate-sale.html',
   styleUrl: './generate-sale.scss',
 })
@@ -32,6 +34,16 @@ export class GenerateSale implements OnInit, AfterViewInit {
   totalDiscount: number = 0;
   receivedAmount: number | null = null;
   changeAmount: number = 0;
+  
+  // Pay Methods
+  payCash: boolean = false;
+  cashReceived: number = 0;
+
+  payCard: boolean = false;
+  cardReceived: number = 0;
+
+  payTransfer: boolean = false;
+  transferReceived: number = 0;
 
   saleCreate: DTO_GenerateSale = {
     fkUser: null,
@@ -199,8 +211,18 @@ export class GenerateSale implements OnInit, AfterViewInit {
       fkUser: currentUser!.pkUser,
       receivedAmount: this.receivedAmount,
       discountAmount: this.totalDiscount,
-      subtotal: this.subtotal, 
-      changeAmount: this.changeAmount
+      subtotal: this.subtotal,
+      changeAmount: this.changeAmount,
+
+      // Montos recibidos por método
+      cashReceived: this.cashReceived || 0,
+      cardReceived: this.cardReceived || 0,
+      transferReceived: this.transferReceived || 0,
+
+      // Banderas/Indicadores de método utilizado
+      payCash: this.payCash,
+      payCard: this.payCard,
+      payTransfer: this.payTransfer
     };
 
     this.saleService.postNewSale(payload).subscribe({
@@ -219,13 +241,24 @@ export class GenerateSale implements OnInit, AfterViewInit {
     });
   }
 
-  cleanForm(){
+  cleanForm() {
     this.formData.resetForm();
     this.loadProducts();
     this.subtotal = 0;
     this.totalDiscount = 0;
     this.receivedAmount = 0;
     this.changeAmount = 0;
+
+    // Limpieza de montos de métodos de pago
+    this.cashReceived = 0;
+    this.cardReceived = 0;
+    this.transferReceived = 0;
+
+    // Limpieza de casillas/banderas de métodos de pago
+    this.payCash = false;
+    this.payCard = false;
+    this.payTransfer = false;
+
     this.saleCreate = {
       fkUser: null,
       total: null,
@@ -239,6 +272,7 @@ export class GenerateSale implements OnInit, AfterViewInit {
         }
       ]
     };
+
     // Regresamos el foco al limpiar la pantalla para la siguiente venta
     this.focusBarcodeReader();
   }
@@ -248,5 +282,16 @@ export class GenerateSale implements OnInit, AfterViewInit {
     const product = this.products_$().find(q => q.pkProduct === idProduct);
     if(!product || !product.unit) return '';
     return product.unit?.abbreviation;
+  }
+
+  getReceivedAmount(){
+
+    let receivedAmount = 0;
+
+    if( this.payCard ) receivedAmount += (this.cardReceived || 0);
+    if( this.payCash ) receivedAmount += (this.cashReceived || 0);
+    if( this.payTransfer ) receivedAmount += (this.transferReceived || 0);
+    
+    this.receivedAmount = receivedAmount;
   }
 }

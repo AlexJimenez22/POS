@@ -7,10 +7,12 @@ import { DTO_TopProduct } from '../../../models/DTOs/DTO_TopProduct';
 import { DTO_Sale } from '../../../models/DTOs/DTO_Sale';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { MenuItem } from 'primeng/api';
+import { SplitButtonModule } from 'primeng/splitbutton';
 
 @Component({
   selector: 'app-sales',
-  imports: [DecimalPipe, FormsModule, DatePipe],
+  imports: [DecimalPipe, FormsModule, DatePipe, SplitButtonModule],
   templateUrl: './sales.html',
   styleUrl: './sales.scss',
 })
@@ -29,8 +31,33 @@ export class Sales implements OnInit {
   alertStock_$ = signal<DTO_AlertStockProduct[]>([]);
   topProducts_$ = signal<DTO_TopProduct[]>([]);
   sales_$ = signal<DTO_Sale[]>([]);
+  items: MenuItem[] = [];
 
   constructor(){
+    this.items = [
+      {
+        label: 'Texto',
+        icon: 'pi pi-file',
+        command: () => {
+          this.generateReport('text');
+        }
+      },
+      {
+        label: 'Excel',
+        icon: 'pi pi-file-excel',
+        command: () => {
+          this.generateReport('excel');
+        }
+      },
+      {
+        label: 'PDF',
+        icon: 'pi pi-file-pdf',
+        command: () => {
+          this.generateReport('pdf');
+        }
+      }
+    ];
+
     effect(() => {
       const start = this.initDate_$();
       const end = this.endDate_$();
@@ -94,6 +121,8 @@ export class Sales implements OnInit {
           return;
         }
 
+        console.log(res.data)
+
         this.sales_$.set(res.data!);
       },
       error: (error: HttpErrorResponse) => {
@@ -103,6 +132,30 @@ export class Sales implements OnInit {
   }
 
 
+  generateReport(typeFile: string) {
+    const init = this.initDate_$();
+    const end = this.endDate_$();
 
+    console.log(init, end, typeFile);
+
+    this.salesService.generateReport(init, end, typeFile).subscribe({
+      next: (blob: Blob) => {
+        // 1. Crear una URL temporal para el objeto Blob recibido
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Corte_Caja_${init}_al_${end}.${typeFile}`;
+        
+        // 2. Simular clic de descarga y limpiar la URL
+        a.click();
+        window.URL.revokeObjectURL(url);
+
+        this.toastService.showToast("success", "Corte de Caja", "Archivo generado y descargado correctamente.");
+      },
+      error: (err) => {
+        this.toastService.showToast("error", "Error", "No se pudo generar el archivo de reporte.");
+      }
+    });
+  }
 
 }
